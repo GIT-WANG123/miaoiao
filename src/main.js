@@ -1,38 +1,21 @@
-// src/main.js
 import { createApp } from 'vue'
+import axios from 'axios'
 import App from './App.vue'
-import router from './routers/router/index.js'
-import store from './stores/store/index.js'
-
-console.log('🔍 开始加载Vue应用')
-
-// 检查各个模块
-try {
-  console.log('✅ Vue模块加载成功')
-  console.log('✅ App组件加载成功:', App)
-  console.log('✅ 路由加载成功:', !!router)
-  console.log('✅ 状态管理加载成功:', !!store)
-} catch (error) {
-  console.error('❌ 模块加载失败:', error)
-}
-
+import router from './routers/router' // 导入路由
+import 'core-js/stable/date';
+import loading from'./components/loading/index.vue'
 const app = createApp(App)
-console.log('✅ Vue应用实例创建成功')
+app.component('loading',loading)
 
-// 使用插件
-try {
-  app.use(store)
-  console.log('✅ Store插件注册成功')
-  app.use(router)
-  console.log('✅ Router插件注册成功')
-} catch (error) {
-  console.error('❌ 插件注册失败:', error)
+app.config.globalProperties.$axios = axios
+// 先设置 movieApi
+const movieApi = {
+  getNowPlaying: () => axios.get('http://39.97.33.178/api/movieOnInfoList?cityId=10'),
+  getComingSoon: () => axios.get('http://39.97.33.178/api/movieComingList?cityId=10')
 }
 
-// 挂载应用
-try {
-  app.mount('#app')
-  console.log('✅ 应用挂载成功')
-} catch (error) {
-  console.error('❌ 应用挂载失败:', error)
-}
+app.provide('movieApi', movieApi) // 在挂载前提供依赖
+app.use(router)  // 使用路由
+
+// 只调用一次 mount，且在所有配置完成后
+app.mount('#app')
