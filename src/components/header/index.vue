@@ -1,7 +1,7 @@
 <template>
   <div>
     <header id="header">
-      <i class="fa fa-bars"></i>
+     <slot></slot> <i class="fa fa-bars"></i>
 			<h1>{{ title }}</h1>
 		</header>
   </div>

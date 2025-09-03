@@ -15,12 +15,14 @@
 				</div>
 				<router-link tag="div" to="/movie/search" class="search_entry">
 					<i class="fas fa-search"></i>
-        </router-link>
+        </router-link> 
 			</div>
       <Keep-alive>
       <router-view></router-view>
       </Keep-alive>
+      
   </div>
+  <router-view name="detail"></router-view>
     </div>
 </template>
 
@@ -28,14 +30,36 @@
  import Header from '@/components/header/index.vue';
  import Tab from '@/components/tab/index.vue';
 import router from '@/routers/router';
+import { MessageBox } from '@/components/JS/index'
+export{MessageBox}
  export default
 {
    name: 'Movie',
    components: {
      Header,
-     Tab
-   },
+     Tab,
    
+   },
+  
+mounted() {
+    setTimeout(() => {
+        MessageBox({
+            title: "定位",
+            content: "大连",
+            cancel: "取消",
+            ok: "切换定位",
+            handleCancel: () => {
+                console.log("用户点击了取消");
+            },
+            handleOk: () => {
+                console.log("用户点击了切换定位");
+                // 这里可以添加切换定位的逻辑
+            }
+        }).then(result => {
+            console.log('对话框结果:', result ? '确定' : '取消');
+        });
+    }, 3000);
+}
 }
 
 
